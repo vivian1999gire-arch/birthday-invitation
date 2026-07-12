@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎂 為妳準備的六款生日方案</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans CJK TC', 'Microsoft JhengHei', sans-serif;
+      background: white;
+      color: #333;
+    }
+
+    .header {
+      background: linear-gradient(to right, #faf5f0, #fce7f3, #f0f9ff);
+      padding: 48px 16px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      font-weight: 900;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 20px;
+      color: #666;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .header .subtitle {
+      font-size: 14px;
+      color: #999;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 16px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .plan-card {
+      border-radius: 16px;
+      padding: 32px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-card:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .plan-card.selected {
+      box-shadow: 0 0 0 4px #fbbf24;
+      transform: scale(1.05);
+    }
+
+    .plan-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 8px 16px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      width: fit-content;
+    }
+
+    .plan-emoji {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .plan-title {
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      white-space: pre-line;
+    }
+
+    .plan-subtitle {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .plan-description {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
+      opacity: 0.9;
+    }
+
+    .plan-button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+    }
+
+    .plan-button:hover {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .detail-view {
+      display: none;
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    .detail-view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .back-button {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      color: #666;
+      cursor: pointer;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    .back-button:hover {
+      color: #111;
+    }
+
+    .detail-card {
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .detail-title {
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      white-space: pre-line;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-bottom: 32px;
+    }
+
+    .divider {
+      height: 6px;
+      width: 80px;
+      opacity: 0.2;
+      margin-bottom: 32px;
+    }
+
+    .detail-section {
+      margin-bottom: 32px;
+    }
+
+    .detail-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .detail-text {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .detail-item {
+      margin-bottom: 24px;
+    }
+
+    .detail-item strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .detail-item span {
+      display: block;
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .best-for-box {
+      border-radius: 12px;
+      padding: 24px;
+      border: 2px solid;
+      border-opacity: 0.2;
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .best-for-box .label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      margin-bottom: 8px;
+    }
+
+    .best-for-box p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .action-buttons button {
+      flex: 1;
+      min-width: 200px;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 16px;
+      letter-spacing: 0.05em;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .copy-button {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .copy-button:hover {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      transform: scale(1.02);
+    }
+
+    .back-detail-button {
+      background: white;
+      border: 2px solid #d1d5db;
+      color: #333;
+    }
+
+    .back-detail-button:hover {
+      background: #f9fafb;
+    }
+
+    .confirmation {
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .confirmation h2 {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .confirmation p {
+      font-size: 16px;
+      opacity: 0.8;
+    }
+
+    .footer {
+      background: #f9fafb;
+      padding: 32px 16px;
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    .footer p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .footer .bold {
+      font-weight: 700;
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🎂 生日快樂</h1>
+    <p>為妳精心準備六個方案，選一個最想要的慶生方式吧！</p>
+    <p class="subtitle">點選卡片查看詳情 ✨</p>
+  </div>
+
+  <div class="container">
+    <!-- Email Input Form -->
+    <div id="emailForm" style="max-width: 600px; margin: 0 auto 40px; background: #f9fafb; padding: 32px; border-radius: 12px;">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #333;">請先填寫妳的資訊</h3>
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #333;">妳的名字（可選）</label>
+        <input type="text" id="userName" placeholder="例：小美" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;">
+      </div>
+      <div style="margin-bottom: 24px;">
+        <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #333;">妳的 Email *</label>
+        <input type="email" id="userEmail" placeholder="你的 email@example.com" required style="width: 100%; padding: 12px; border: 2px solid #d1d5db; border-radius: 8px; font-size: 14px;" />
+      </div>
+      <p style="font-size: 12px; color: #666; margin-bottom: 0;">選好方案後，我們會把妳的選擇寄到妳的 email 喔！</p>
+    </div>
+
+    <div id="cardsContainer" class="cards-grid"></div>
+    <div id="detailView" class="detail-view"></div>
+  </div>
+
+  <div class="footer">
+    <p class="bold">為妳精心準備 · 生日快樂 💝</p>
+    <p>我是米米，陪你把生活過的順心有底氣</p>
+  </div>
+
+  <script>
+    const plans = [
+      {
+        id: 'A',
+        name: '人生不一定很順利 但可以在義大利',
+        title: '人生不一定很順利\n但可以在義大利',
+        subtitle: '南歐石青藍 · 異國浪漫',
+        bgColor: 'linear-gradient(to bottom right, #fef3c7, #d1fae5, #d0f5e3)',
+        textColor: '#166534',
+        tagBg: '#15803d',
+        tagText: '#fef3c7',
+        accentColor: '#059669',
+        emoji: '🇮🇹',
+        description: '烤箱前常有小挫折，但今天先把甜點的事放一邊。換一個優雅的角度，用一頓托斯卡尼風的義式料理，來療癒那些烤焦的日子。',
+        details: [
+          { label: '餐廳', value: '托斯卡尼尼義大利庭園餐廳-台中北屯店' },
+          { label: '風格', value: '品嚐經典義大利料理 · 享受南歐風情與精緻擺盤' },
+          { label: '體驗', value: '庭園悠閒漫步 · 彷彿漫步在托斯卡尼的花園' }
+        ],
+        bestFor: '需要一場優雅的異國逃跑，享受老派浪漫與完美擺拍的妳。'
+      },
+      {
+        id: 'B',
+        name: '每天不一定很漂亮 但一定閃亮亮',
+        title: '每天不一定很漂亮\n但一定閃亮亮',
+        subtitle: '乾燥玫瑰法式 · 精緻擺拍',
+        bgColor: 'linear-gradient(to bottom right, #fce7f3, #fbcfe8, #fef3c7)',
+        textColor: '#831843',
+        tagBg: '#be185d',
+        tagText: '#fff',
+        accentColor: '#d946a6',
+        emoji: '🇫🇷',
+        description: '平常妳精心打造每個甜點的擺盤、構圖、打燈，今天讓精緻的餐點為妳效勞。坐著享受被精緻招待的感覺，每一口都閃閃發光。',
+        details: [
+          { label: '餐廳選擇', value: '所 SUO / GULU Dining' },
+          { label: '風格', value: '法式精緻美學的極致表現 · 每道菜都是藝術品級的擺盤' },
+          { label: '體驗', value: '光線、擺盤、氛圍，怎麼拍都好看' }
+        ],
+        bestFor: '最懂擺拍、最注重餐點顏值與質感，今天讓精緻招待妳的妳。'
+      },
+      {
+        id: 'C',
+        name: '豐原囡仔 本土氛圍',
+        title: '豐原囡仔\n本土氛圍',
+        subtitle: '復古紅土 · 在地情懷',
+        bgColor: 'linear-gradient(to bottom right, #991b1b, #7f1d1d, #5f0f0f)',
+        textColor: '#fef3c7',
+        tagBg: '#eab308',
+        tagText: '#7f1d1d',
+        accentColor: '#fcd34d',
+        emoji: '🪵',
+        description: '身為正宗豐原囡仔，怎麼能少了台味浪漫？這天回歸最熟悉、最有靈魂的台味真本色！不吃花俏擺盤，只吃最扎實的人情味。',
+        details: [
+          { label: '餐廳', value: '菜園炸蚵爹' },
+          { label: '美食', value: '招牌手路熱炒 · 大口爽嗑最扎實的人情味' },
+          { label: '慶祝', value: '古早味蛋糕切蛋糕 · 懷舊滋味，最對味的生日慶祝' }
+        ],
+        bestFor: '私底下個性豪爽、愛熱鬧，想回歸最熟悉的在地台味、享受人情味的妳。'
+      },
+      {
+        id: 'D',
+        name: '輕盈窈窕愛地球',
+        title: '身體與心靈\n來場淨化之旅',
+        subtitle: '北歐海藍綠 · 純淨療癒',
+        bgColor: 'linear-gradient(to bottom right, #f0f9ff, #cffafe, #d1fae5)',
+        textColor: '#134e4a',
+        tagBg: '#0d9488',
+        tagText: '#fff',
+        accentColor: '#14b8a6',
+        emoji: '🌿',
+        description: '整天在烤箱前與巴斯克蛋糕相伴，甜點的講究與精準早已刻進骨子裡。今天先把這份專注放一邊，用精緻蔬食與純淨環保的方式，好好療癒自己。',
+        details: [
+          { label: '餐廳', value: 'TERRA de Verdant 豐土' },
+          { label: '特色', value: '精緻植物系蔬食料理 · 無負擔的精緻' },
+          { label: '體驗', value: '高顏值米其林蔬食享受 · 吃得飽也吃得有質感' }
+        ],
+        bestFor: '嚮往無負擔、精緻環保的生活步調，想用溫和的方式療癒自己的妳。'
+      },
+      {
+        id: 'E',
+        name: '重溫舊夢 留學時光',
+        title: '回憶那些\n青澀的時光',
+        subtitle: '美式牛仔藍 · 留學懷舊',
+        bgColor: 'linear-gradient(to bottom right, #f0f9ff, #e0e7ff, #dbeafe)',
+        textColor: '#1e3a8a',
+        tagBg: '#2563eb',
+        tagText: '#fff',
+        accentColor: '#3b82f6',
+        emoji: '🤠',
+        description: '留學時那些青澀、自由、滿懷夢想的日子，永遠值得被溫暖想起。今天我們用一頓經典美式大餐，回到那段最閃閃發光的時刻。',
+        details: [
+          { label: '餐廳選擇', value: '貓王 / 雙城美式餐廳' },
+          { label: '風格', value: '懷舊美式經典 · 道地美式風味' },
+          { label: '體驗', value: '彷彿置身異國 · 回溫青春記憶' }
+        ],
+        bestFor: '心裡還藏著對留學青澀時光的溫暖回憶，想好好為自己那段精采時刻慶祝的妳。'
+      },
+      {
+        id: 'F',
+        name: '烤焙大師的 跨界玩火',
+        title: '暫時登出烤箱\n直球玩大火',
+        subtitle: '烤肉烈焰紅 · 跨界狂歡',
+        bgColor: 'linear-gradient(to bottom right, #991b1b, #b91c1c, #7f1d1d)',
+        textColor: '#fef3c7',
+        tagBg: '#d97706',
+        tagText: '#fff',
+        accentColor: '#fbbf24',
+        emoji: '🔥',
+        description: '為精準的甜點溫度所困，今天直接跨界到頂級炭火。拋開那些細緻的控制，用最直球對決的肉汁與熱火，來場痛快的狂歡。',
+        details: [
+          { label: '餐廳', value: '好運燒肉' },
+          { label: '體驗', value: '台中最頂級的炭火燒肉體驗 · 極上肉品' },
+          { label: '享受', value: '專人代烤 · 大口吃肉，享受頂級尊榮' }
+        ],
+        bestFor: '平時體貼、克制、把一切都控制在完美溫度，生日就要大口吃肉、放縱享樂的玩火女神的妳。'
+      }
+    ];
+
+    function createCard(plan) {
+      const card = document.createElement('div');
+      card.className = 'plan-card';
+      card.style.background = plan.bgColor;
+      card.style.color = plan.textColor;
+      card.onclick = () => showDetail(plan.id);
+      
+      card.innerHTML = `
+        <div class="plan-emoji">${plan.emoji}</div>
+        <span class="plan-tag" style="background: ${plan.tagBg}; color: ${plan.tagText};">${plan.id} 方案</span>
+        <h2 class="plan-title">${plan.title}</h2>
+        <p class="plan-subtitle" style="color: ${plan.accentColor};">${plan.subtitle}</p>
+        <p class="plan-description">${plan.description}</p>
+        <button class="plan-button" style="background: ${plan.tagBg}; color: ${plan.tagText};">查看詳情</button>
+      `;
+      return card;
+    }
+
+    function showDetail(planId) {
+      const email = document.getElementById('userEmail').value;
+      if (!email) {
+        alert('請先填寫妳的 Email 喔！');
+        document.getElementById('userEmail').focus();
+        return;
+      }
+
+      const plan = plans.find(p => p.id === planId);
+      const cardsContainer = document.getElementById('cardsContainer');
+      const detailView = document.getElementById('detailView');
+
+      cardsContainer.style.display = 'none';
+      detailView.classList.add('active');
+
+      let detailsHTML = plan.details.map(d => 
+        `<div class="detail-item"><strong style="color: ${plan.accentColor};">✓ ${d.label}</strong><span>${d.value}</span></div>`
+      ).join('');
+
+      detailView.innerHTML = `
+        <button class="back-button" onclick="goBack()">← 看其他方案</button>
+        <div class="detail-card" style="background: ${plan.bgColor}; color: ${plan.textColor};">
+          <div style="max-width: 800px; margin: 0 auto;">
+            <div style="font-size: 60px; margin-bottom: 16px;">${plan.emoji}</div>
+            <h1 class="detail-title">${plan.title}</h1>
+            <p class="detail-subtitle" style="color: ${plan.accentColor};">${plan.subtitle}</p>
+            <div class="divider" style="background: ${plan.textColor};"></div>
+            
+            <div class="detail-section">
+              <p class="detail-label" style="color: ${plan.accentColor};">為 妳 而 寫</p>
+              <p class="detail-text">${plan.description}</p>
+            </div>
+
+            <div class="detail-section">
+              <p class="detail-label" style="color: ${plan.accentColor};">方 案 詳 情</p>
+              ${detailsHTML}
+            </div>
+
+            <div class="best-for-box" style="border-color: ${plan.textColor};">
+              <p class="label" style="color: ${plan.accentColor};">最 適 合 這 樣 的 妳</p>
+              <p style="color: ${plan.textColor};">${plan.bestFor}</p>
+            </div>
+
+            <div class="action-buttons">
+              <button class="copy-button" style="background: ${plan.tagBg}; color: ${plan.tagText};" onclick="sendToEmail('${planId}', '${plan.name}', '${plan.title}', '${plan.subtitle}')">寄送結果到 Email</button>
+              <button class="back-detail-button" onclick="goBack()">重新選擇</button>
+            </div>
+
+            <div class="confirmation" style="color: ${plan.textColor};">
+              <h2>✨ 妳選了「${plan.name}」！</h2>
+              <p>點「寄送結果到 Email」就能把選擇寄到妳的信箱！</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function sendToEmail(planId, planName, title, subtitle) {
+      const email = document.getElementById('userEmail').value;
+      const name = document.getElementById('userName').value || '親愛的壽星';
+
+      if (!email) {
+        alert('請填寫 Email！');
+        document.getElementById('userEmail').focus();
+        return;
+      }
+
+      const plan = plans.find(p => p.id === planId);
+      
+      // 產生詳細內容
+      const details = plan.details.map(d => `${d.label}：${d.value}`).join('\n\n');
+      
+      const emailContent = `親愛的 ${name}：
+
+感謝妳用心選擇！
+
+🎉 妳選了：「${planName}」
+
+📍 ${title.replace(/\n/g, ' ')}
+${subtitle}
+
+✨ 方案詳情：
+${details}
+
+💝 ${plan.bestFor}
+
+---
+為妳精心準備 · 生日快樂 🎂
+我是米米，陪你把生活過的順心有底氣`;
+
+      // 使用 FormSubmit 寄送郵件（同時寄給壽星和米米）
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('subject', `🎂 我選了生日方案：${planName}`);
+      formData.append('message', emailContent);
+      formData.append('_captcha', 'false');
+      formData.append('_cc', 'vivian1999gire@gmail.com'); // 同時抄送給米米
+
+      // 顯示寄送中
+      const originalText = event.target.textContent;
+      event.target.textContent = '寄送中...';
+      event.target.disabled = true;
+
+      fetch('https://formsubmit.co/ajax/' + email, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(`✨ 成功！\n\n選擇結果已寄到：${email}\n米米也收到了妳的選擇！\n\n生日快樂 🎂💝`);
+        setTimeout(() => {
+          goBack();
+        }, 1000);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        event.target.textContent = originalText;
+        event.target.disabled = false;
+        alert('❌ 寄送失敗，請重新試試\n\n或者直接複製選擇文字手動寄送');
+      });
+    }
+
+    function goBack() {
+      const cardsContainer = document.getElementById('cardsContainer');
+      const detailView = document.getElementById('detailView');
+      cardsContainer.style.display = 'grid';
+      detailView.classList.remove('active');
+    }
+
+    function copySelection(name, title, subtitle) {
+      const text = `我選了「${name}」！\n\n${title}\n\n${subtitle}`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('已複製到剪貼板 ✨');
+      });
+    }
+
+    // Initialize cards
+    const cardsContainer = document.getElementById('cardsContainer');
+    plans.forEach(plan => {
+      cardsContainer.appendChild(createCard(plan));
+    });
+  </script>
+</body>
+</html>
