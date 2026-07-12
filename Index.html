@@ -71,11 +71,6 @@
       transform: translateY(-4px);
     }
 
-    .plan-card.selected {
-      box-shadow: 0 0 0 4px #fbbf24;
-      transform: scale(1.05);
-    }
-
     .plan-tag {
       display: inline-block;
       font-size: 12px;
@@ -333,7 +328,6 @@
   </div>
 
   <div class="container">
-    <!-- Email Input Form -->
     <div id="emailForm" style="max-width: 600px; margin: 0 auto 40px; background: #f9fafb; padding: 32px; border-radius: 12px;">
       <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #333;">請先填寫妳的資訊</h3>
       <div style="margin-bottom: 16px;">
@@ -561,7 +555,6 @@
 
       const plan = plans.find(p => p.id === planId);
       
-      // 產生詳細內容
       const details = plan.details.map(d => `${d.label}：${d.value}`).join('\n\n');
       
       const emailContent = `親愛的 ${name}：
@@ -582,19 +575,18 @@ ${details}
 為妳精心準備 · 生日快樂 🎂
 我是米米，陪你把生活過的順心有底氣`;
 
-      // 使用 FormSubmit 寄送郵件（同時寄給壽星和米米）
       const formData = new FormData();
       formData.append('name', name);
       formData.append('email', email);
       formData.append('subject', `🎂 我選了生日方案：${planName}`);
       formData.append('message', emailContent);
       formData.append('_captcha', 'false');
-      formData.append('_cc', 'vivian1999gire@gmail.com'); // 同時抄送給米米
+      formData.append('_cc', 'vivian1999gire@gmail.com');
 
-      // 顯示寄送中
-      const originalText = event.target.textContent;
-      event.target.textContent = '寄送中...';
-      event.target.disabled = true;
+      const button = event.target;
+      const originalText = button.textContent;
+      button.textContent = '寄送中...';
+      button.disabled = true;
 
       fetch('https://formsubmit.co/ajax/' + email, {
         method: 'POST',
@@ -609,9 +601,9 @@ ${details}
       })
       .catch(error => {
         console.error('Error:', error);
-        event.target.textContent = originalText;
-        event.target.disabled = false;
-        alert('❌ 寄送失敗，請重新試試\n\n或者直接複製選擇文字手動寄送');
+        button.textContent = originalText;
+        button.disabled = false;
+        alert('❌ 寄送失敗，請重新試試');
       });
     }
 
@@ -622,14 +614,6 @@ ${details}
       detailView.classList.remove('active');
     }
 
-    function copySelection(name, title, subtitle) {
-      const text = `我選了「${name}」！\n\n${title}\n\n${subtitle}`;
-      navigator.clipboard.writeText(text).then(() => {
-        alert('已複製到剪貼板 ✨');
-      });
-    }
-
-    // Initialize cards
     const cardsContainer = document.getElementById('cardsContainer');
     plans.forEach(plan => {
       cardsContainer.appendChild(createCard(plan));
